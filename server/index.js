@@ -3,12 +3,9 @@ import dotenv from "dotenv";
 import { connectDb } from "./database/db.js";
 import Razorpay from "razorpay";
 import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
 
 dotenv.config();
 
-// Razorpay instance
 export const instance = new Razorpay({
   key_id: process.env.Razorpay_Key,
   key_secret: process.env.Razorpay_Secret,
@@ -16,23 +13,11 @@ export const instance = new Razorpay({
 
 const app = express();
 
-// Required for __dirname in ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 // using middlewares
 app.use(express.json());
 app.use(cors());
 
-// Serve static files from the React frontend
-app.use(express.static(path.resolve(__dirname, "../../frontend/dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../../frontend/dist/index.html"));
-});
-
-
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 app.get("/", (req, res) => {
   res.send("Server is working");
