@@ -16,6 +16,15 @@ const app = express();
 // using middlewares
 app.use(express.json());
 app.use(cors());
+const path = require("path");
+
+// Serve static files from the React frontend
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
+});
+
 
 const port = process.env.PORT;
 
